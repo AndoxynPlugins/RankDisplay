@@ -1,0 +1,11 @@
+name: RankDisplay
+main: net.daboross.bukkitdev.rankdisplay.RankDisplay
+version: 1.0
+author: Dabo Ross
+description: This plugin allows you to view ranks with PEX.
+depend: [PermissionsEx]
+commands:
+   rank:
+     description: This is the base command for Player Data.
+     usage: /<command> [username]
+     aliases: [viewrank]
