@@ -21,7 +21,7 @@ import ru.tehkode.permissions.bukkit.PermissionsEx;
  */
 public class RankDisplay extends JavaPlugin /*implements Listener*/ {
 
-    private static final String MAIN_COLOR = ChatColor.AQUA.toString();
+    private static final String MAIN_COLOR = ChatColor.WHITE.toString();
     private static final String RANK_COLOR = ChatColor.RED.toString();
     private static final String NAME_COLOR = ChatColor.BLUE.toString();
     private static final String ERROR_COLOR = ChatColor.DARK_RED.toString();
@@ -39,17 +39,21 @@ public class RankDisplay extends JavaPlugin /*implements Listener*/ {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (command.getName().equalsIgnoreCase("rank")) {
             if (args.length == 0) {
-                sender.sendMessage("You are currently " + RANK_COLOR + getRankName(sender));
+                sender.sendMessage(MAIN_COLOR + "You are currently " + RANK_COLOR + getRankName(sender));
+            } else if (args.length != 1) {
+                sender.sendMessage(ERROR_COLOR + "TO MANY AAAARRRRGGGUUUMMMEEENNTTS!!!!!");
+                return false;
             } else {
-                Player player = getPlayer(args[1]);
+                Player player = getPlayer(args[0]);
                 if (player == null) {
-                    sender.sendMessage(ERROR_COLOR + "Player " + args[0] + " not found.");
+                    sender.sendMessage(ERROR_COLOR + "Player " + NAME_COLOR + args[0] + MAIN_COLOR + " not found.");
                     sender.sendMessage(ERROR_COLOR + "For better name matching, use:");
                     sender.sendMessage(COMMAND_COLOR + "/pd i " + args[0]);
                 } else {
                     sender.sendMessage(NAME_COLOR + player.getName() + MAIN_COLOR + " is currently " + RANK_COLOR + getRankName(player));
                 }
             }
+            return true;
         }
         sender.sendMessage(ERROR_COLOR + "Command Error!");
         return false;
@@ -76,7 +80,7 @@ public class RankDisplay extends JavaPlugin /*implements Listener*/ {
             return "None";
         }
         if (strings.length == 1) {
-            return strings[1];
+            return strings[0];
         }
         StringBuilder builder = new StringBuilder(strings[0]);
         for (String string : strings) {
