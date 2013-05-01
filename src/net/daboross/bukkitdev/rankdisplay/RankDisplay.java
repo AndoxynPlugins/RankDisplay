@@ -46,9 +46,9 @@ public class RankDisplay extends JavaPlugin /*implements Listener*/ {
             } else {
                 Player player = getPlayer(args[0]);
                 if (player == null) {
-                    sender.sendMessage(ERROR_COLOR + "Player " + NAME_COLOR + args[0] + MAIN_COLOR + " not found.");
+                    sender.sendMessage(ERROR_COLOR + "Player " + NAME_COLOR + args[0] + ERROR_COLOR + " not found.");
                     sender.sendMessage(ERROR_COLOR + "For better name matching, use:");
-                    sender.sendMessage(COMMAND_COLOR + "/pd i " + args[0]);
+                    sender.sendMessage(COMMAND_COLOR + "/pd i " + NAME_COLOR + args[0]);
                 } else {
                     sender.sendMessage(NAME_COLOR + player.getName() + MAIN_COLOR + " is currently " + RANK_COLOR + getRankName(player));
                 }
