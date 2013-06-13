@@ -1,16 +1,14 @@
-
 package net.daboross.bukkitdev.rankdisplay;
 
-//import org.bukkit.Bukkit;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-//import org.bukkit.event.EventHandler;
-//import org.bukkit.event.EventPriority;
-//import org.bukkit.event.Listener;
-//import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import ru.tehkode.permissions.PermissionUser;
 import ru.tehkode.permissions.bukkit.PermissionsEx;
@@ -19,7 +17,7 @@ import ru.tehkode.permissions.bukkit.PermissionsEx;
  *
  * @author daboross
  */
-public class RankDisplay extends JavaPlugin /*implements Listener*/ {
+public class RankDisplay extends JavaPlugin implements Listener {
 
     private static final String MAIN_COLOR = ChatColor.WHITE.toString();
     private static final String RANK_COLOR = ChatColor.RED.toString();
@@ -41,7 +39,7 @@ public class RankDisplay extends JavaPlugin /*implements Listener*/ {
             if (args.length == 0) {
                 sender.sendMessage(MAIN_COLOR + "You are currently " + RANK_COLOR + getRankName(sender));
             } else if (args.length != 1) {
-                sender.sendMessage(ERROR_COLOR + "TO MANY AAAARRRRGGGUUUMMMEEENNTTS!!!!!");
+                sender.sendMessage(ERROR_COLOR + "To Many Arguments");
                 return false;
             } else {
                 Player player = getPlayer(args[0]);
@@ -83,8 +81,8 @@ public class RankDisplay extends JavaPlugin /*implements Listener*/ {
             return strings[0];
         }
         StringBuilder builder = new StringBuilder(strings[0]);
-        for (String string : strings) {
-            builder.append(", ").append(string);
+        for (int i = 1; i < strings.length; i++) {
+            builder.append(", ").append(strings[i]);
         }
         return builder.toString();
     }
@@ -92,8 +90,12 @@ public class RankDisplay extends JavaPlugin /*implements Listener*/ {
     private PermissionUser getPermUser(Player player) {
         return PermissionsEx.getUser(player);
     }
-//
-//    @EventHandler(priority = EventPriority.MONITOR)
-//    public void onPlayerJoin(PlayerJoinEvent pje) {
-//    }
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onPlayerJoin(PlayerJoinEvent pje) {
+        Player p = pje.getPlayer();
+        if (!p.hasPlayedBefore()) {
+            p.chat("/spawn");
+        }
+    }
 }
