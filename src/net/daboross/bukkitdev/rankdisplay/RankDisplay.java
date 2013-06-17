@@ -1,5 +1,7 @@
 package net.daboross.bukkitdev.rankdisplay;
 
+import java.util.logging.Level;
+import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -9,9 +11,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
-import ru.tehkode.permissions.PermissionUser;
-import ru.tehkode.permissions.bukkit.PermissionsEx;
 
 /**
  *
@@ -24,9 +25,11 @@ public class RankDisplay extends JavaPlugin implements Listener {
     private static final String NAME_COLOR = ChatColor.BLUE.toString();
     private static final String ERROR_COLOR = ChatColor.DARK_RED.toString();
     private static final String COMMAND_COLOR = ChatColor.GREEN.toString();
+    private Permission permissionHandler;
 
     @Override
     public void onEnable() {
+        setupVault();
         Bukkit.getPluginManager().registerEvents(this, this);
     }
 
@@ -64,14 +67,14 @@ public class RankDisplay extends JavaPlugin implements Listener {
 
     private String getRankName(CommandSender sender) {
         if (sender instanceof Player) {
-            return getFormattedRank(getPermUser((Player) sender).getGroupsNames());
+            return getRankName((Player) sender);
         } else {
             return "NonPlayer";
         }
     }
 
     private String getRankName(Player player) {
-        return getFormattedRank(getPermUser(player).getGroupsNames());
+        return getFormattedRank(permissionHandler.getPlayerGroups((String) null, player.getName()));
     }
 
     private String getFormattedRank(String[] strings) {
@@ -88,15 +91,22 @@ public class RankDisplay extends JavaPlugin implements Listener {
         return builder.toString();
     }
 
-    private PermissionUser getPermUser(Player player) {
-        return PermissionsEx.getUser(player);
-    }
-
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerJoin(PlayerJoinEvent pje) {
         Player p = pje.getPlayer();
         if (!p.hasPlayedBefore()) {
             p.chat("/spawn");
+        }
+    }
+
+    private void setupVault() {
+        RegisteredServiceProvider<Permission> rsp = Bukkit.getServer().getServicesManager().getRegistration(Permission.class);
+        permissionHandler = rsp.getProvider();
+        if (permissionHandler == null) {
+            getLogger().log(Level.SEVERE, "Vault found, but Permission handler not found!");
+            Bukkit.getPluginManager().disablePlugin(this);
+        } else {
+            getLogger().log(Level.INFO, "Vault and Permission handler found.");
         }
     }
 }
