@@ -48,7 +48,7 @@ public class RankDisplay extends JavaPlugin implements Listener {
             } else {
                 Player player = getPlayer(args[0]);
                 if (player == null) {
-                    sender.sendMessage(ERROR_COLOR + "Player " + NAME_COLOR + args[0] + ERROR_COLOR + " not found.");
+                    sender.sendMessage(ERROR_COLOR + "Player " + NAME_COLOR + args[0] + ERROR_COLOR + " not found or not online");
                     sender.sendMessage(ERROR_COLOR + "For better name matching, use:");
                     sender.sendMessage(COMMAND_COLOR + "/pd i " + NAME_COLOR + args[0]);
                 } else {
@@ -62,7 +62,12 @@ public class RankDisplay extends JavaPlugin implements Listener {
     }
 
     private Player getPlayer(String name) {
-        return Bukkit.getServer().getPlayer(name);
+        for (Player p : Bukkit.getOnlinePlayers()) {
+            if (p.getName().toLowerCase().contains(name.toLowerCase()) || ChatColor.stripColor(p.getDisplayName()).toLowerCase().contains(name.toLowerCase())) {
+                return p;
+            }
+        }
+        return null;
     }
 
     private String getRankName(CommandSender sender) {
