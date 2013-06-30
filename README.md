@@ -1,0 +1,4 @@
+RankDisplay
+===========
+
+RankDisplay Bukkit Plugin
