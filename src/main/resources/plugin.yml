@@ -1,6 +1,6 @@
-name: RankDisplay
-main: net.daboross.bukkitdev.rankdisplay.RankDisplay
-version: 1.0
+name: ${project.name}
+main: net.daboross.bukkitdev.rankdisplay.RankDisplayPlugin
+version: ${project.version}
 author: Dabo Ross
 description: This plugin allows you to view ranks with PEX.
 depend: [Vault]

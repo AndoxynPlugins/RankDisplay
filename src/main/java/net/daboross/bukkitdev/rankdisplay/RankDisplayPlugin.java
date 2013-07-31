@@ -16,6 +16,7 @@
  */
 package net.daboross.bukkitdev.rankdisplay;
 
+import java.io.IOException;
 import java.util.logging.Level;
 import net.milkbowl.vault.permission.Permission;
 import org.bukkit.Bukkit;
@@ -29,12 +30,13 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.mcstats.MetricsLite;
 
 /**
  *
  * @author daboross
  */
-public class RankDisplay extends JavaPlugin implements Listener {
+public class RankDisplayPlugin extends JavaPlugin implements Listener {
 
     private static final String MAIN_COLOR = ChatColor.WHITE.toString();
     private static final String RANK_COLOR = ChatColor.RED.toString();
@@ -47,6 +49,11 @@ public class RankDisplay extends JavaPlugin implements Listener {
     public void onEnable() {
         setupVault();
         Bukkit.getPluginManager().registerEvents(this, this);
+        try {
+            new MetricsLite(this).start();
+        } catch (IOException ex) {
+            getLogger().log(Level.WARNING, "Unable to create metrics");
+        }
     }
 
     @Override
