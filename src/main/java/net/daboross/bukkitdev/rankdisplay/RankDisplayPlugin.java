@@ -49,10 +49,14 @@ public class RankDisplayPlugin extends JavaPlugin implements Listener {
     public void onEnable() {
         setupVault();
         Bukkit.getPluginManager().registerEvents(this, this);
+        MetricsLite metrics = null;
         try {
-            new MetricsLite(this).start();
+            metrics = new MetricsLite(this);
         } catch (IOException ex) {
-            getLogger().log(Level.WARNING, "Unable to create metrics");
+            getLogger().log(Level.WARNING, "Unable to create Metrics", ex);
+        }
+        if (metrics != null) {
+            metrics.start();
         }
     }
 
