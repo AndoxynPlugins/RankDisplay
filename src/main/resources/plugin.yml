@@ -2,10 +2,9 @@ name: ${project.name}
 main: net.daboross.bukkitdev.rankdisplay.RankDisplayPlugin
 version: ${project.version}
 author: Dabo Ross
-description: This plugin allows you to view ranks with PEX.
+description: ${project.description}
 depend: [Vault]
 commands:
    rank:
-     description: This is the base command for Player Data.
+     description: Views your rank or the rank of another player
      usage: /<command> [username]
-     aliases: [viewrank]
